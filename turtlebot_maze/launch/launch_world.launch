@@ -1,0 +1,17 @@
+<launch>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find robot_sim)/worlds/hello.world"/>
+    <!-- more default parameters can be changed here -->
+  </include>
+   
+  <arg name="x_pos" default="-1.0"/>
+  <arg name="y_pos" default="0.0"/>
+  <arg name="z_pos" default="0.0"/>
+  <arg name="num" default="0"/>
+
+  <node pkg="robot_sim" name="spawn_code"  type="spawn_code.py" output="screen"> 
+  	<param name="init_pose" value="$(arg x_pos),$(arg y_pos),$(arg z_pos)"/>
+  	<param name="additional_robots" value="$(arg num)"/>
+  </node>
+</launch>

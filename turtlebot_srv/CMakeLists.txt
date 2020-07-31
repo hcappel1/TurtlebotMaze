@@ -60,6 +60,9 @@ add_service_files(
   ObstacleAvoidance.srv
   MazeCompletion.srv
   PotentialField.srv
+  Turn.srv
+  Align.srv
+  Planner.srv
 )
 
 ## Generate actions in the 'action' folder

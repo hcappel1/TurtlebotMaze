@@ -1,8 +1,13 @@
 <launch>
-  <node pkg="turtlebot_maze" type="obstacle_avoidance_srv" name="obstacle_avoidance_node"  output="screen">
+  <node pkg="turtlebot_maze" type="obstacle_avoidance_srv" name="obstacle_avoidance_srv_node" output="screen">
   </node>
 
-  <node pkg="turtlebot_maze" type="main_control" name="main_control_node" 
-  output="screen">
+  <node pkg="turtlebot_maze" type="main_control" name="main_control_node" output="screen">
+  </node> 
+
+  <node pkg="turtlebot_maze" type="align_srv" name="align_srv_node" output="screen">
+  </node> 
+
+  <node pkg="turtlebot_maze" type="turn_srv" name="turn_srv_node" output="screen">
   </node> 
 </launch>

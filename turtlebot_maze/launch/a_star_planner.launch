@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="turtlebot_maze" type="a_star_planner.py" name="a_star_planner_node"  output="screen">
+  </node>
+</launch>

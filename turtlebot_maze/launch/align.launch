@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="turtlebot_maze" type="align_srv" name="align_srv_node"  output="screen">
+  </node>
+</launch>

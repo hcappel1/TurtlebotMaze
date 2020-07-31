@@ -9,6 +9,7 @@ project(turtlebot_maze)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
   message_generation
   turtlebot_srv
@@ -143,7 +144,17 @@ target_link_libraries(main_control
    ${catkin_LIBRARIES}
  )
 
+add_executable(align_srv src/align_srv.cpp)
+add_dependencies(align_srv ${align_srv_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(align_srv
+   ${catkin_LIBRARIES}
+ )
 
+add_executable(turn_srv src/turn_srv.cpp)
+add_dependencies(turn_srv ${turn_srv_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(turn_srv
+   ${catkin_LIBRARIES}
+ )
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/turtlebot_maze.cpp

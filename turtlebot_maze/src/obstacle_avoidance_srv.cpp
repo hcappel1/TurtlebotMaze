@@ -90,7 +90,7 @@ class ObstacleAvoidance
 
             //repulsive field
             if (sizeof(range_data) > 0){
-                for (int i = 0; i < 720; i++){
+                for (int i = 0; i < sizeof(range_data); i++){
                     if (range_data[i] < d_max){
                         ob_gain = -K_r*(1/range_data[i] - 1/d_max);
                         ob_x = range_data[i]*cos(robot_angle + 3*M_PI/2 + d_angle*i);
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     ObstacleAvoidance obstacle_avoidance;
 
     ros::ServiceServer obstacle_avoidance_srv = nh.advertiseService("/obstacle_avoidance_srv", &ObstacleAvoidance::PotentialField, &obstacle_avoidance);
-    ros::Subscriber laser_sub = nh.subscribe("kobuki/laser/scan", 1000, &ObstacleAvoidance::ObstacleCheck, &obstacle_avoidance);
+    ros::Subscriber laser_sub = nh.subscribe("scan", 1000, &ObstacleAvoidance::ObstacleCheck, &obstacle_avoidance);
     ros::Subscriber odom_sub = nh.subscribe("odom", 1000, &ObstacleAvoidance::OdomCallback, &obstacle_avoidance);
     ros::spin();
 

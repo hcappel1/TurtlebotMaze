@@ -62,6 +62,9 @@ class MainControl
         std::vector<float> optimal_path;
         std::vector<float> begin_end_coords;
 
+        //time variables
+        double start_time;
+
         
         MainControl(){
             ROS_INFO("Main control initiated");
@@ -72,7 +75,7 @@ class MainControl
             planner_srv = nh_.serviceClient<turtlebot_srv::Planner>("/planner_srv");
             turn_srv = nh_.serviceClient<turtlebot_srv::Turn>("/turn_srv");
             odom_sub = nh_.subscribe("odom", 1000, &MainControl::OdomCallback, this);
-            laser_sub = nh_.subscribe("kobuki/laser/scan", 1000, &MainControl::LaserCallback, this);
+            laser_sub = nh_.subscribe("scan", 1000, &MainControl::LaserCallback, this);
             waypoint.push_back(0.0);
             waypoint.push_back(0.0);
             left_ob = 0.6;
@@ -103,21 +106,19 @@ class MainControl
                 DecideMove();
                 MakeTurn();
                 UpdateWaypoint();
-                begin_end_coords.push_back(x_pos);
-                begin_end_coords.push_back(y_pos);
-                begin_end_coords.push_back(waypoint[0]);
-                begin_end_coords.push_back(waypoint[1]);
-                FindPath(begin_end_coords);
-
-                CheckObstacle();
+                //CheckObstacle();
+                AlignYaw();
+                start_time = ros::Time::now().toSec();
                 ROS_INFO("waypoint: %f, %f", waypoint[0], waypoint[1]);
             }
             //ROS_INFO("position: %f, %f", x_pos, y_pos);
-            if (center_ob < 0.2 || right_ob < 0.2 || left_ob < 0.2){
-                CheckObstacle();
-                theta_ref = atan2(vel_vec.linear.y, vel_vec.linear.x);
-                AlignYaw();
-            }
+            // if (ros::Time::now().toSec() - start_time > 3.0){
+            //     CheckObstacle();
+            //     theta_ref = atan2(vel_vec.linear.y, vel_vec.linear.x);
+            //     ROS_INFO("theta ref: %f", theta_ref);
+            //     AlignYaw();
+            //     start_time = ros::Time::now().toSec();
+            // }
     
             double x_vec = vel_vec.linear.x*cos(yaw_angle) + vel_vec.linear.y*sin(yaw_angle);
             double y_vec = -vel_vec.linear.x*sin(yaw_angle) + vel_vec.linear.y*cos(yaw_angle);
@@ -125,7 +126,7 @@ class MainControl
             //ROS_INFO("robot vec: %f, %f", x_vec, y_vec);
             //ROS_INFO("theta_ref: %f", theta_ref);
             //ROS_INFO("yaw_angle: %f", yaw_angle);
-            vel_msg.linear.x = x_vec;
+            vel_msg.linear.x = 0.2;
             //vel_msg.linear.y = y_vec;
             
             vel_pub.publish(vel_msg);
@@ -200,8 +201,8 @@ class MainControl
             ros::spinOnce();
             //ROS_INFO("current yaw angle:: %f", yaw_angle);
 
-            if (center_ob > 30){
-                center_ob = 30;
+            if (center_ob > 3.0){
+                center_ob = 3.0;
             }
 
             if (fabs(yaw_angle - 0.0) < 0.2){

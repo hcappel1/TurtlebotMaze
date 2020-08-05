@@ -26,7 +26,7 @@ class AlignRobot
         {
             while (fabs(yaw_angle - req.theta_ref) > 0.2){
                     vel_msg.linear.x = 0.0;
-                    vel_msg.angular.z = -4.0*(Sign(yaw_angle - req.theta_ref));
+                    vel_msg.angular.z = -1.0*(Sign(yaw_angle - req.theta_ref));
                     vel_pub.publish(vel_msg);
                     ros::spinOnce();
                     ROS_INFO("yaw angle: %f", yaw_angle);

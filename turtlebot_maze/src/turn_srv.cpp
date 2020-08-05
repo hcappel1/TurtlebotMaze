@@ -29,10 +29,10 @@ class Turn
                 turtlebot_srv::Turn::Response &res)
         {
             if (req.direction == 0){
-                turn_angle = M_PI/2;
-                //if (turn_angle > 2*M_PI){
-                  //  turn_angle -= 2*M_PI;
-                //}
+                turn_angle = yaw_angle + M_PI/2;
+                if (turn_angle > 2*M_PI){
+                   turn_angle -= 2*M_PI;
+                }
                 while (fabs(yaw_angle - turn_angle) > 0.1){
                     vel_msg.angular.z = 0.55;
                     vel_pub.publish(vel_msg);
@@ -45,10 +45,10 @@ class Turn
                 
             }
             else if (req.direction == 2){
-                turn_angle = 3*M_PI/2;
-                // if (turn_angle > 2*M_PI){
-                //     turn_angle -= 2*M_PI;
-                // }
+                turn_angle = yaw_angle + 3*M_PI/2;
+                if (turn_angle > 2*M_PI){
+                    turn_angle -= 2*M_PI;
+                }
                 while (fabs(yaw_angle - turn_angle) > 0.1){
                     vel_msg.angular.z = -0.5;
                     vel_pub.publish(vel_msg);

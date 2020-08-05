@@ -138,9 +138,9 @@ target_link_libraries(obstacle_avoidance_srv
    ${catkin_LIBRARIES}
  )
 
-add_executable(main_control src/main_control.cpp)
-add_dependencies(main_control ${main_control_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(main_control
+add_executable(main src/main.cpp)
+add_dependencies(main ${main_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(main
    ${catkin_LIBRARIES}
  )
 

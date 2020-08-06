@@ -206,18 +206,29 @@ public:
 	void Controller()
 	{
 		double Kp = 0.5;
-		double yaw_angle_copy;
+		double yaw_angle_change = yaw_angle;
+		double yaw_ref_change = yaw_ref;
 
-		if (yaw_angle > M_PI){
-			yaw_angle_copy = yaw_angle - 2*M_PI;
+		if (yaw_ref > -M_PI/4 && yaw_ref < M_PI/4){
+			if (yaw_angle > 7*M_PI/4){
+				yaw_angle_change = yaw_angle - 2*M_PI;
+			}
 		}
-		else{
-			yaw_angle_copy = yaw_angle;
+		else if (yaw_ref > M_PI/4 && yaw_ref < 3*M_PI/4){
+
+		}
+		else if (yaw_ref > 3*M_PI/4 || yaw_ref < -3*M_PI/4){
+			if (yaw_ref < 0.0){
+				yaw_ref_change = yaw_ref + 2*M_PI;
+			}
+		}
+		else if (yaw_ref < -M_PI/4 && yaw_ref > -3*M_PI/4){
+			yaw_ref_change = yaw_ref + 2*M_PI;
 		}
 
-		ROS_INFO("yaw_ref, yaw_angle: %f, %f", yaw_ref, yaw_angle_copy);
+		//ROS_INFO("yaw_ref, yaw_angle: %f, %f", yaw_ref_change, yaw_angle_change);
 
-		double yaw_act = -Kp*(yaw_angle_copy - yaw_ref);
+		double yaw_act = -Kp*(yaw_angle_change - yaw_ref_change);
 
 		vel_msg.angular.z = yaw_act;
 		vel_msg.linear.x = 0.5;
